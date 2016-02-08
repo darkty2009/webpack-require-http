@@ -1,9 +1,10 @@
-module.exports = function(request) {
+module.exports = function(request, id) {
     return "\
         var link = document.createElement('link');\
         link.type = 'text/css';\
-        link.ref = 'stylesheet';\
+        link.rel = 'stylesheet';\
         link.href = '"+request+"';\
-        document.body.appendChild(link);\
+        link.id = '"+id+"';\
+        (document.head || document.body).appendChild(link);\
     ";
 };
