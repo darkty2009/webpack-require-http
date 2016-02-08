@@ -10,7 +10,7 @@ var getExtContent = function(pathname, request) {
     if(!extMap[ext]) {
         ext = 'js';
     }
-    return extMap[ext].call(null, request);
+    return "(function() { "+extMap[ext].call(null, request)+"})()";
 };
 
 module.exports = function(context, request, callback) {
