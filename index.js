@@ -23,7 +23,7 @@ var getExtContent = function(pathname, request) {
     if(!extMap[ext]) {
         ext = 'js';
     }
-    var id = require('md5');
+    var id = require('md5')(request);
     return evalFunction(existFunction(extMap[ext].call(null, request, id), id));
 };
 
@@ -32,7 +32,6 @@ module.exports = function(context, request, callback) {
     if(result.protocol == 'http:' || request.protocol == 'https:') {
         var pathname = result.pathname || "";
         var content = getExtContent(pathname, request);
-        console.log(content);
         return callback(null, content);
     }
 
