@@ -4,7 +4,7 @@
   "description": "you can use the 'require' method to load http resource in webpack tool",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/demo.js"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/darkty2009/webpack-require-http/issues"
   },
-  "homepage": "https://github.com/darkty2009/webpack-require-http#readme"
+  "homepage": "https://github.com/darkty2009/webpack-require-http#readme",
+  "dependencies":{
+    "url":"^0.11.0"
+  }
 }
