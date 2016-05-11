@@ -11,10 +11,15 @@ var evalFunction = function(content) {
 
 var existFunction = function(content, id) {
     return "\
-        if(document.getElementById('" + id + "')) {\
-            return false;\
+        var promise = null;\
+        if(document.getElementById('"+id+"')) {\
+            promise = new Promise(function(resolve, reject) {\
+                resolve();\
+            });\
         }\
-        " + content + "\
+        "+content+"\
+\
+        return Promise.all([promise]);\
     ";
 };
 
