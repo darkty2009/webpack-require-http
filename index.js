@@ -34,7 +34,7 @@ var getExtContent = function(pathname, request) {
 
 module.exports = function(context, request, callback) {
     var result = url.parse(request);
-    if(result.protocol == 'http:' || request.protocol == 'https:') {
+    if(result.protocol == 'http:' || result.protocol == 'https:') {
         var pathname = result.pathname || "";
         var content = getExtContent(pathname, request);
         return callback(null, content);
