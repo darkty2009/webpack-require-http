@@ -1,19 +1,25 @@
 module.exports = function(request, id) {
     return "\
-        promise = new Promise(function(resolve, reject) {\
+        var fun=function(resolve, reject){\
             var link = document.createElement('link');\
             link.type = 'text/css';\
             link.rel = 'stylesheet';\
             link.href = '"+request+"';\
             link.id = '"+id+"';\
             (document.head || document.body).appendChild(link);\
-\
             link.onload = function() {\
-                resolve();\
+                typeof resolve=='function' && resolve();\
             };\
             link.onerror = function() {\
-                reject();\
+                typeof reject=='function' && reject();\
             };\
-        });\
+        };\
+        if(JQ){\
+            fun(resolve, reject);\
+        }else{\
+            promise = new Promise(function(resolve, reject) {\
+                fun(resolve, reject);\
+            });\
+        }\
     ";
 };
