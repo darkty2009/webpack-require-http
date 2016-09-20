@@ -12,14 +12,22 @@ var evalFunction = function(content) {
 var existFunction = function(content, id) {
     return "\
         var promise = null;\
+        var JQ='undefined'!=typeof jQuery;\
+        var dfd = JQ && jQuery.Deferred();\
+        var resolve = JQ && dfd.resolve;\
+        var reject = JQ && dfd.reject;\
         if(document.getElementById('"+id+"')) {\
-            promise = new Promise(function(resolve, reject) {\
+            if(JQ){\
                 resolve();\
-            });\
+            }else{\
+                promise = new Promise(function(resolve, reject) {\
+                    resolve();\
+                });\
+            }\
         }\
         "+content+"\
 \
-        return Promise.all([promise]);\
+        return JQ ? dfd.promise() : Promise.all([promise]);\
     ";
 };
 
