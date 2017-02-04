@@ -52,6 +52,7 @@ Promise.all([
 ]).then(function() {
     console.log(CodeMirror);
 });
+```
 
 ## config rule
 
