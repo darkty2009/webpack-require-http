@@ -52,3 +52,74 @@ Promise.all([
 ]).then(function() {
     console.log(CodeMirror);
 });
+
+## config rule
+
+in ```0.4.0```, you can use some rules to parse request, such as adjust ```http:|https:```
+
+```
+{
+    ...
+    entry:{
+        ...
+    },
+    output:{
+        ...
+    },
+    externals:[
+        require('webpack-require-http').custom({
+            rules:{
+                '^#api\/common':'http://static.domain.com/api/common.js'
+            }
+        })
+    ]
+    ...
+}
+```
+
+### using rules
+
+```
+custom({
+    rules:{
+        'some regexp' : 'replace result'
+    }
+})
+```
+
+```
+custom({
+    rules:function(filepath, request) {
+        return request;
+    }
+});
+```
+
+## demo
+
+```
+var webpackRequireHttp = require('webpack-require-http');
+
+var custom1Function = webpackRequireHttp.custom({
+    rules:{
+        '^#(.+)\/(.+)':'http://static.something.com/$1/$2.js'
+    }
+});
+
+custom1Function('', '#api/sdk', function(err, content) {
+    console.log('TEST2', content); // script, src=http://static.something.com/api/sdk.js
+});
+
+var custom2Function = webpackRequireHttp.custom({
+    rules:function(context, request) {
+        if(request && request.indexOf('//') == 0) {
+            return 'http:' + request;
+        }
+        return request;
+    }
+});
+
+custom2Function('', '//something.com/index.js', function(err, content) {
+    console.log('TEST3', content); // script, src=http://something.com/index.js
+});
+```

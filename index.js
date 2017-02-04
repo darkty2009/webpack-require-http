@@ -1,5 +1,12 @@
 var url = require('url');
 
+var protocols = [
+    'http:',
+    'https:',
+    'ftp:',
+    'ftps:',
+    'ws:'
+];
 var extMap = {
     'js':require('./ext/ext-js'),
     'css':require('./ext/ext-css')
@@ -31,8 +38,11 @@ var existFunction = function(content, id) {
     ";
 };
 
-var getExtContent = function(pathname, request) {
+var getExtContent = function(pathname, request, options) {
     var ext = pathname.split('.').pop();
+    if(options && options.ext) {
+        ext = options.ext(pathname, request);
+    }
     if(!extMap[ext]) {
         ext = 'js';
     }
@@ -40,13 +50,33 @@ var getExtContent = function(pathname, request) {
     return evalFunction(existFunction(extMap[ext].call(null, request, id), id));
 };
 
-module.exports = function(context, request, callback) {
+var defaultExports = function(context, request, callback, options) {
+    var rules = options ? options.rules : null;
+    if(request && rules) {
+        if(typeof rules == 'function') {
+            request = rules.call(null, context, request);
+        }
+        if(typeof rules == 'object') {
+            Object.keys(rules).forEach(function(rule, index) {
+                request = request.replace(new RegExp(rule, 'ig'), rules[rule]);
+            });
+        }
+    }
+
     var result = url.parse(request);
-    if(result.protocol == 'http:' || result.protocol == 'https:') {
+    if(protocols.indexOf(result.protocol) > -1) {
         var pathname = result.pathname || "";
-        var content = getExtContent(pathname, request);
+        var content = getExtContent(pathname, request, options);
         return callback(null, content);
     }
 
     return callback();
 };
+
+defaultExports.custom = function(option) {
+    return function() {
+        return defaultExports.apply(null, Array.prototype.slice.call(arguments).concat(option));
+    };
+};
+
+module.exports = defaultExports;
