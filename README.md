@@ -85,9 +85,7 @@ custom({
         'some regexp' : 'replace result'
     }
 })
-```
 
-```
 custom({
     rules:function(filepath, request) {
         return request;
