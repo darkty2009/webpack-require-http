@@ -1,6 +1,6 @@
 {
   "name": "webpack-require-http",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "you can use the 'require' method to load http resource in webpack tool",
   "main": "index.js",
   "scripts": {
