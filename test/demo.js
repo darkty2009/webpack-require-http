@@ -48,3 +48,7 @@ var custom2Function = webpackRequireHttp.custom({
 custom2Function('', '//something.com/index.js', function(err, content) {
     console.log('TEST3', content);
 });
+
+webpackRequireHttp('', '>/direct/to/path.js', function(err, content) {
+    console.log('TEST9', content);
+});

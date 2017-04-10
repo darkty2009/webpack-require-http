@@ -122,3 +122,7 @@ custom2Function('', '//something.com/index.js', function(err, content) {
     console.log('TEST3', content); // script, src=http://something.com/index.js
 });
 ```
+
+## logs
+
+0.4.3   add special char to ignore valid url check.

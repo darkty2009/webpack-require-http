@@ -63,11 +63,16 @@ var defaultExports = function(context, request, callback, options) {
         }
     }
 
-    var result = url.parse(request);
-    if(protocols.indexOf(result.protocol) > -1) {
-        var pathname = result.pathname || "";
-        var content = getExtContent(pathname, request, options);
-        return callback(null, content);
+    if(request && request.indexOf('>') == 0) {
+        request = request.substring(1);
+        return callback(null, getExtContent(request, request, options));
+    }else {
+        var result = url.parse(request);
+        if(protocols.indexOf(result.protocol) > -1) {
+            var pathname = result.pathname || "";
+            var content = getExtContent(pathname, request, options);
+            return callback(null, content);
+        }
     }
 
     return callback();
